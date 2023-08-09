@@ -1,5 +1,7 @@
 echo "Load .zshrc"
 
+setopt PROMPT_SUBST
+
 cc-git-print()
 {
   branch=$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')
