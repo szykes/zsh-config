@@ -11,7 +11,7 @@ cc-git-print()
   branch=$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')
   if [ -n "$branch" ]; then
     local=$(git rev-parse ${branch})
-    origin=$(git rev-parse origin/${branch})
+    origin=$(git rev-parse origin/${branch} 2> /dev/null)
     if [ "$local" = "$origin" ]; then
       echo ${branch}
       return
