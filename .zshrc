@@ -66,7 +66,7 @@ alias -g git-push-draft="git push origin HEAD:refs/drafts/$(git symbolic-ref HEA
 path=('/opt/homebrew/bin' $path)
 export PATH
 
-export ARM_GCC_DIR=/Users/$USER/workspace/toolchain_arm_gnu/10.3_2021.10/osx-x64
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export LSP_USE_PLISTS=true
 
