@@ -44,6 +44,10 @@ setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
 
 unalias -a
 
+# https://www.cyberciti.biz/faq/apple-mac-osx-terminal-color-ls-output-option/
+export CLICOLOR=1
+export LSCOLORS=ehfxcxdxbxegedabagacad
+
 alias -g ls="ls -F --color"
 alias -g ll="ls -lF --color"
 alias -g la="ls -alF --color"
