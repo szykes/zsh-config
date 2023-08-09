@@ -2,6 +2,10 @@ echo "Load .zshrc"
 
 setopt PROMPT_SUBST
 
+include () {
+    [[ -f "$1" ]] && source "$1"
+}
+
 cc-git-print()
 {
   branch=$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')
@@ -23,6 +27,9 @@ cc-git-print()
 
   echo "NA"
 }
+
+include $HOME/.secret
+include $HOME/tools/.add-paths
 
 PROMPT="%F{green}%B%n%F{yellow}[$(cc-git-print)]%F{green}@%m:%F{blue}%~%#%f%b "
 
