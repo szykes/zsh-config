@@ -53,8 +53,6 @@ alias -g ll="ls -lF --color"
 alias -g la="ls -alF --color"
 alias -g grep="grep --color=auto"
 
-alias -g emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-alias -g emacsclient="/Applications/Emacs.app/Contents/MacOS/bin-$CPUTYPE-11/emacsclient"
 alias -g vi="vim"
 
 alias -g git-log="git log --graph  --color --decorate --oneline --all --dense --date=local | less -R"
