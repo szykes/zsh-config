@@ -68,6 +68,25 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export LSP_USE_PLISTS=true
 
+# https://docs.brew.sh/Shell-Completion
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
+# https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-macos
+autoload bashcompinit && bashcompinit
+include $(brew --prefix)/etc/bash_completion.d/az
+
+# https://medium.com/@bm54cloud/how-to-setup-kubectl-zsh-autocompletion-for-macos-2fb4d270cfab
+#kubectl autocompletion
+autoload -Uz compinit
+compinit
+source <(kubectl completion zsh)
+
 run-emacs()
 {
   if [ $(ps aux | grep -i emacs | grep daemon | grep $USER | wc -l) -eq 0 ]; then
