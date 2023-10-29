@@ -33,7 +33,7 @@ cc-git-print()
 include $HOME/.secret
 include $HOME/tools/.add-paths
 
-PROMPT="%F{green}%B%n%F{yellow}[$(cc-git-print)]%F{green}@%m:%F{blue}%~%#%f%b "
+PROMPT='%F{green}%B%n%F{yellow}[$(cc-git-print)]%F{green}@%m:%F{blue}%~%#%f%b '
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
