@@ -89,6 +89,8 @@ autoload -Uz compinit
 compinit
 source <(kubectl completion zsh)
 
+alias -g k="kubectl"
+
 run-emacs()
 {
   if [ $(ps aux | grep -i emacs | grep daemon | grep $USER | wc -l) -eq 0 ]; then
