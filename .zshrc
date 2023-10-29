@@ -104,5 +104,5 @@ find-and-replace()
         return 0
     fi
 
-    find $1 \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s@$2@$3@g"
+    find $1 \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i '' "s^$2^$3^g"
 }
