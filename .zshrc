@@ -93,10 +93,8 @@ alias -g k="kubectl"
 
 run-emacs()
 {
-  if [ $(ps aux | grep -i emacs | grep daemon | grep $USER | wc -l) -eq 0 ]; then
-    emacs --daemon=$USER
-  fi
-  emacsclient -s $USER -t
+    rm -f "$HOME/.emacs.d/desktop/lock"
+    emacsclient --tty --alternate-editor="" -e '(switch-to-buffer nil)'
 }
 
 find-and-replace()
