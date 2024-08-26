@@ -8,11 +8,16 @@ include () {
     [[ -f "$1" ]] && source "$1"
 }
 
-cc-git-print()
+git-print()
 {
-  branch=$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')
+  if ! which git > /dev/null; then
+    echo "NA"
+    return
+  fi
+
+  branch=$(git branch --show-current 2> /dev/null)
   if [ -n "$branch" ]; then
-    local=$(git rev-parse ${branch})
+    local=$(git rev-parse ${branch} 2> /dev/null)
     origin=$(git rev-parse origin/${branch} 2> /dev/null)
     if [ "$local" = "$origin" ]; then
       echo ${branch}
@@ -26,14 +31,32 @@ cc-git-print()
     echo ${branch%?}
     return
   fi
+}
 
-  echo "NA"
+k8s-cluster-print()
+{
+  if ! which kubectx > /dev/null; then
+    echo "NA"
+    return
+  fi
+
+  echo "|"$(kubectx -c)
+}
+
+k8s-namespace-print()
+{
+  if ! which kubens > /dev/null; then
+    echo "NA"
+    return
+  fi
+
+  echo "|"$(kubens -c)
 }
 
 include $HOME/.secret
 include $HOME/tools/.add-paths
 
-PROMPT='%F{green}%B%n%F{yellow}[$(cc-git-print)]%F{green}@%m:%F{blue}%~%#%f%b '
+PROMPT='%F{green}%B%n%F{yellow}[$(git-print)$(k8s-cluster-print)$(k8s-namespace-print)]%F{green}@%m:%F{blue}%~%#%f%b '
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
