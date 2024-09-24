@@ -129,3 +129,35 @@ find-and-replace()
 
     find $1 \( -type d -name .git -prune \) -o -type f -exec grep -Iq . {} \; -print0  | xargs -0 sed -i '' "s^$2^$3^g"
 }
+
+go-install-if-exists()
+{
+  if type "$1" &>/dev/null
+  then
+    echo "Updating $1"
+    go install "$2"
+  else
+    echo "Not installed: $1"
+  fi
+}
+
+update-packages()
+{
+  if type brew &>/dev/null
+  then
+    brew update && brew upgrade && brew cleanup
+  fi
+
+  if type go &>/dev/null
+  then
+    go-install-if-exists gopls golang.org/x/tools/gopls@latest
+    go-install-if-exists mockgen go install go.uber.org/mock/mockgen@latest
+    go-install-if-exists govulncheck golang.org/x/vuln/cmd/govulncheck@latest
+    go-install-if-exists deadcode golang.org/x/tools/cmd/deadcode@latest
+    go-install-if-exists golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+    go-install-if-exists impi github.com/pavius/impi/cmd/impi@latest
+    go-install-if-exists go-acc github.com/ory/go-acc@latest
+    go-install-if-exists protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go@latest
+    go-install-if-exists protoc-gen-go-grpc google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+  fi
+}
