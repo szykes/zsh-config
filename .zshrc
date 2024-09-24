@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 ulimit -n 2048
 
 include () {
-    [[ -f "$1" ]] && source "$1"
+  [[ -f "$1" ]] && source "$1"
 }
 
 git-print()
@@ -55,6 +55,7 @@ k8s-namespace-print()
 
 include $HOME/.secret
 include $HOME/tools/.add-paths
+include $HOME/.zshrc-company
 
 PROMPT='%F{green}%B%n%F{yellow}[$(git-print)$(k8s-cluster-print)$(k8s-namespace-print)]%F{green}@%m:%F{blue}%~%#%f%b '
 
@@ -78,20 +79,30 @@ alias -g ll="ls -lF --color"
 alias -g la="ls -alF --color"
 alias -g grep="grep --color=auto"
 
-alias -g vi="vim"
-
 alias -g git-log="git log --graph  --color --decorate --oneline --all --dense --date=local | less -R"
 alias -g git-sub="git submodule update --init --recursive --jobs 10"
 alias -g git-pull="git pull -r ; git pull -r && git-sub"
 alias -g git-push-for="git push origin HEAD:refs/for/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
 alias -g git-push-draft="git push origin HEAD:refs/drafts/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
 
-path=('/opt/homebrew/bin' $path)
+if type go &>/dev/null
+then
+  if [ -n "$(go env GOBIN)" ]; then
+    export PATH="$(go env GOBIN):$PATH"
+  elif [ -n "$(go env GOPATH)" ]; then
+    export PATH="$(go env GOPATH)/bin:$PATH"
+  else
+    echo "WARNING: GOPATH is not set"
+  fi
+fi
+
 export PATH
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export LSP_USE_PLISTS=true
+
+export HOMEBREW_NO_INSTALL_FROM_API=1
 
 # https://docs.brew.sh/Shell-Completion
 if type brew &>/dev/null
@@ -116,18 +127,19 @@ alias -g k="kubectl"
 
 run-emacs()
 {
-    rm -f "$HOME/.emacs.d/desktop/lock"
-    emacsclient --tty --alternate-editor="" -e '(switch-to-buffer nil)'
+  rm -f "$HOME/.emacs.d/desktop/lock"
+  emacsclient --tty --alternate-editor="" -e '(switch-to-buffer nil)'
 }
 
 find-and-replace()
 {
-    if [ -z $1 ]; then
-        echo "HELP: find-and-replace [path] [find string] [replace to]"
-        return 0
-    fi
+  if [ -z $1 ]; then
+    echo "HELP: find-and-replace [path] [find string] [replace to]"
+    echo "Separator character is ^"
+    return 0
+  fi
 
-    find $1 \( -type d -name .git -prune \) -o -type f -exec grep -Iq . {} \; -print0  | xargs -0 sed -i '' "s^$2^$3^g"
+  find $1 \( -type d -name .git -prune \) -o -type f -exec grep -Iq . {} \; -print0  | xargs -0 sed -i '' "s^$2^$3^g"
 }
 
 go-install-if-exists()
