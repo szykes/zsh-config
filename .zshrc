@@ -35,8 +35,7 @@ git-print()
 
 k8s-cluster-print()
 {
-  if ! which kubectx > /dev/null; then
-    echo "NA"
+  if ! type kubectx > /dev/null; then
     return
   fi
 
@@ -45,8 +44,7 @@ k8s-cluster-print()
 
 k8s-namespace-print()
 {
-  if ! which kubens > /dev/null; then
-    echo "NA"
+  if ! type kubens > /dev/null; then
     return
   fi
 
@@ -104,26 +102,26 @@ export LSP_USE_PLISTS=true
 
 export HOMEBREW_NO_INSTALL_FROM_API=1
 
-# https://docs.brew.sh/Shell-Completion
-if type brew &>/dev/null
-then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-  autoload -Uz compinit
-  compinit
-fi
+autoload -Uz compinit
+compinit
 
 # https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-macos
 autoload bashcompinit && bashcompinit
 include $(brew --prefix)/etc/bash_completion.d/az
 
+# https://docs.brew.sh/Shell-Completion
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
 # https://medium.com/@bm54cloud/how-to-setup-kubectl-zsh-autocompletion-for-macos-2fb4d270cfab
 #kubectl autocompletion
-autoload -Uz compinit
-compinit
-source <(kubectl completion zsh)
-
-alias -g k="kubectl"
+if type kubectl &>/dev/null
+then
+  source <(kubectl completion zsh)
+  alias -g k="kubectl"
+fi
 
 run-emacs()
 {
