@@ -161,7 +161,7 @@ update-packages()
   if type go &>/dev/null
   then
     go-install-if-exists gopls golang.org/x/tools/gopls@latest
-    go-install-if-exists mockgen go install go.uber.org/mock/mockgen@latest
+    go-install-if-exists mockgen go.uber.org/mock/mockgen@latest
     go-install-if-exists govulncheck golang.org/x/vuln/cmd/govulncheck@latest
     go-install-if-exists deadcode golang.org/x/tools/cmd/deadcode@latest
     go-install-if-exists golangci-lint github.com/golangci/golangci-lint/cmd/golangci-lint@latest
