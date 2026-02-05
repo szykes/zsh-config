@@ -53,6 +53,11 @@ k8s-namespace-print()
   echo "|"$(kubens -c)
 }
 
+autoload -Uz compinit
+compinit
+
+autoload bashcompinit && bashcompinit
+
 include $HOME/.secret
 include $HOME/tools/.add-paths
 include $HOME/.zshrc-company
@@ -74,19 +79,23 @@ unalias -a
 export CLICOLOR=1
 export LSCOLORS=ehfxcxdxbxegedabagacad
 
+# emacs
+export LSP_USE_PLISTS=true
+
 alias -g ls="ls -F --color"
 alias -g ll="ls -lF --color"
 alias -g la="ls -alF --color"
 alias -g grep="grep --color=auto"
 
-alias -g git-log="git log --graph  --color --decorate --oneline --all --dense --date=local | less -R"
-alias -g git-sub="git submodule update --init --recursive --jobs 10"
-alias -g git-pull="git pull -r ; git pull -r && git-sub"
-alias -g git-push-for="git push origin HEAD:refs/for/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
-alias -g git-push-draft="git push origin HEAD:refs/drafts/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
+if type git > /dev/null; then
+  alias -g git-log="git log --graph  --color --decorate --oneline --all --dense --date=local | less -R"
+  alias -g git-sub="git submodule update --init --recursive --jobs 10"
+  alias -g git-pull="git pull -r ; git pull -r && git-sub"
+  alias -g git-push-for="git push origin HEAD:refs/for/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
+  alias -g git-push-draft="git push origin HEAD:refs/drafts/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
+fi
 
-if type go &>/dev/null
-then
+if type go > /dev/null; then
   if [ -n "$(go env GOBIN)" ]; then
     export PATH="$(go env GOBIN):$PATH"
   elif [ -n "$(go env GOPATH)" ]; then
@@ -96,32 +105,38 @@ then
   fi
 fi
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if type kubectl > /dev/null ; then
+  if [[ ! -e ~/.oh-my-zsh/completions/_kubernetes ]]; then
+    mkdir -p ~/.oh-my-zsh/completions
+    kubectl completion zsh > ~/.oh-my-zsh/completions/_kubernetes
+  fi
+  source ~/.oh-my-zsh/completions/_kubernetes
 
-export LSP_USE_PLISTS=true
-
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_INSTALL_FROM_API=1
-
-autoload -Uz compinit
-compinit
-
-# https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-macos
-autoload bashcompinit && bashcompinit
-include $(brew --prefix)/etc/bash_completion.d/az
-
-# https://docs.brew.sh/Shell-Completion
-if type brew &>/dev/null
-then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  alias -g k="kubectl"
 fi
 
-# https://medium.com/@bm54cloud/how-to-setup-kubectl-zsh-autocompletion-for-macos-2fb4d270cfab
-#kubectl autocompletion
-if type kubectl &>/dev/null
-then
-  source <(kubectl completion zsh)
-  alias -g k="kubectl"
+if type docker > /dev/null ; then
+  if [[ ! -e ~/.oh-my-zsh/completions/_docker ]]; then
+    mkdir -p ~/.oh-my-zsh/completions
+    docker completion zsh > ~/.oh-my-zsh/completions/_docker
+  fi
+
+  source ~/.oh-my-zsh/completions/_docker
+fi
+
+if type brew > /dev/null; then
+   eval "$(/opt/homebrew/bin/brew shellenv)"
+
+   export HOMEBREW_NO_AUTO_UPDATE=1
+   export HOMEBREW_NO_INSTALL_FROM_API=1
+
+   # https://docs.brew.sh/Shell-Completion
+   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+   if type az > /dev/null; then
+     # https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-macos
+     include $(brew --prefix)/etc/bash_completion.d/az
+   fi
 fi
 
 run-emacs()
