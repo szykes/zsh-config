@@ -94,12 +94,11 @@ then
   fi
 fi
 
-export PATH
-
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export LSP_USE_PLISTS=true
 
+export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_INSTALL_FROM_API=1
 
 autoload -Uz compinit
