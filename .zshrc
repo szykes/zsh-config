@@ -9,10 +9,6 @@ include () {
 git-print()
 {
   if ! type git > /dev/null; then
-    return
-  fi
-
-  if ! which git > /dev/null; then
     echo "NA"
     return
   fi
@@ -87,13 +83,11 @@ alias -g ll="ls -lF --color"
 alias -g la="ls -alF --color"
 alias -g grep="grep --color=auto"
 
-if type git > /dev/null; then
-  alias -g git-log="git log --graph  --color --decorate --oneline --all --dense --date=local | less -R"
-  alias -g git-sub="git submodule update --init --recursive --jobs 10"
-  alias -g git-pull="git pull -r ; git pull -r && git-sub"
-  alias -g git-push-for="git push origin HEAD:refs/for/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
-  alias -g git-push-draft="git push origin HEAD:refs/drafts/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
-fi
+alias -g git-log="git log --graph  --color --decorate --oneline --all --dense --date=local | less -R"
+alias -g git-sub="git submodule update --init --recursive --jobs 10"
+alias -g git-pull="git pull -r ; git pull -r && git-sub"
+alias -g git-push-for="git push origin HEAD:refs/for/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
+alias -g git-push-draft="git push origin HEAD:refs/drafts/$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')"
 
 if type go > /dev/null; then
   if [ -n "$(go env GOBIN)" ]; then
