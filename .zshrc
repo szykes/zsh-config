@@ -2,8 +2,6 @@ echo "Load .zshrc"
 
 setopt PROMPT_SUBST
 
-ulimit -n 2048
-
 include () {
   [[ -f "$1" ]] && source "$1"
 }
