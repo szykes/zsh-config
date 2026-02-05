@@ -8,6 +8,10 @@ include () {
 
 git-print()
 {
+  if ! type git > /dev/null; then
+    return
+  fi
+
   if ! which git > /dev/null; then
     echo "NA"
     return
