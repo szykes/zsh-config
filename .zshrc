@@ -118,7 +118,7 @@ if type docker > /dev/null ; then
   source ~/.oh-my-zsh/completions/_docker
 fi
 
-if type brew > /dev/null; then
+if [ -f /opt/homebrew/bin/brew ]; then
    eval "$(/opt/homebrew/bin/brew shellenv)"
 
    export HOMEBREW_NO_AUTO_UPDATE=1
