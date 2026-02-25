@@ -37,7 +37,12 @@ k8s-cluster-print()
     return
   fi
 
-  echo "|"$(kubectx -c)
+  ctx="$(kubectx -c 2> /dev/null)"
+  if [[ "$?" -ne "0" ]]; then
+    return
+  fi
+
+  echo "|$ctx"
 }
 
 k8s-namespace-print()
@@ -46,7 +51,12 @@ k8s-namespace-print()
     return
   fi
 
-  echo "|"$(kubens -c)
+  ctx="$(kubens -c 2> /dev/null)"
+  if [[ "$?" -ne "0" ]]; then
+    return
+  fi
+
+  echo "|$ctx"
 }
 
 autoload -Uz compinit
