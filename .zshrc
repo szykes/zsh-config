@@ -51,12 +51,12 @@ k8s-namespace-print()
     return
   fi
 
-  ctx="$(kubens -c 2> /dev/null)"
+  ns="$(kubens -c 2> /dev/null)"
   if [[ "$?" -ne "0" ]]; then
     return
   fi
 
-  echo "|$ctx"
+  echo "|$ns"
 }
 
 autoload -Uz compinit
