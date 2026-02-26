@@ -37,7 +37,11 @@ k8s-cluster-print()
     return
   fi
 
-  ctx="$(kubectx -c 2> /dev/null)"
+  if [[ "$(kubectx | wc -l | tr -d ' ' > /dev/null)" -lt 2 ]]; then
+    return
+  fi
+
+  ctx="$(kubectx -c 2> /dev/null | sed -E 's|^arn:aws:eks:([^:]+):[^:]+:cluster/(.*)|\1/\2|')"
   if [[ "$?" -ne "0" ]]; then
     return
   fi
