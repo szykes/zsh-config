@@ -37,7 +37,7 @@ k8s-cluster-print()
     return
   fi
 
-  if [[ "$(kubectx | wc -l | tr -d ' ' > /dev/null)" -lt 2 ]]; then
+  if [[ "$(kubectx | wc -l | tr -d ' ')" -lt 2 ]]; then
     return
   fi
 
