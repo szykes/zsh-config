@@ -165,5 +165,10 @@ find-and-replace()
     return 0
   fi
 
-  find $1 \( -type d -name .git -prune \) -o -type f -exec grep -Iq . {} \; -print0  | xargs -0 sed -i '' "s^$2^$3^g"
+  if type fd > /dev/null && type sd > /dev/null ; then
+    fd -t f . "$1" -x sd "$2" "$3"
+  else
+    echo "WARNING: execute `brew install fd sd` to be more effective"
+    find $1 \( -type d -name .git -prune \) -o -type f -exec grep -Iq . {} \; -print0  | xargs -0 sed -i '' "s^$2^$3^g"
+  fi
 }
