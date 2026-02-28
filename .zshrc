@@ -145,6 +145,10 @@ if [ -f /opt/homebrew/bin/brew ]; then
      # https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-macos
      include $(brew --prefix)/etc/bash_completion.d/az
    fi
+
+   if [ -d /opt/homebrew/opt/llvm/bin ]; then
+     export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+   fi
 fi
 
 run-emacs()
