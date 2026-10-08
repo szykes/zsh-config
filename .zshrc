@@ -92,7 +92,7 @@ export LSCOLORS=ehfxcxdxbxegedabagacad
 # emacs
 export LSP_USE_PLISTS=true
 
-alias -g ls="ls -F --color"
+#alias -g ls="ls -F --color"
 alias -g ll="ls -lF --color"
 alias -g la="ls -alF --color"
 alias -g grep="grep --color=auto"
