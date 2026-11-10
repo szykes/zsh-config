@@ -1,5 +1,7 @@
 echo "Load .zshrc"
 
+unalias -a
+
 setopt PROMPT_SUBST
 
 include () {
@@ -63,6 +65,10 @@ k8s-namespace-print()
   echo "|$ns"
 }
 
+if type brew &>/dev/null; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
 autoload -Uz compinit
 compinit
 
@@ -82,8 +88,6 @@ setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
 setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
 setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
-
-unalias -a
 
 # https://www.cyberciti.biz/faq/apple-mac-osx-terminal-color-ls-output-option/
 export CLICOLOR=1
